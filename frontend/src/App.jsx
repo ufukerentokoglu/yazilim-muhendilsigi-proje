@@ -16,7 +16,7 @@ function App() {
               <span className="logo-icon">🇹🇷</span>
               <h1>Türkiye Yöresel Lezzetler</h1>
             </a>
-            <p className="subtitle">Abstract Factory Design Pattern ile 7 Bölge, 28 Şehir, Eşsiz Tatlar</p>
+            <p className="subtitle">7 Bölgenin Eşsiz Lezzetleri</p>
           </header>
           <main>
             <Routes>
@@ -25,7 +25,7 @@ function App() {
             </Routes>
           </main>
           <footer className="app-footer">
-            <p>Yazılım Mühendisliği Projesi — Abstract Factory Pattern</p>
+            <p>Türkiye'nin Yöresel Lezzetleri</p>
           </footer>
           <CartButton />
           <CartSidebar />

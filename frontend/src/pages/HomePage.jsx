@@ -29,7 +29,6 @@ function HomePage() {
   return (
     <div className="home-page">
       <div className="hero-section">
-        <h2>Bir Bölge Seçin</h2>
         <p>Türkiye'nin 7 coğrafi bölgesinden birini seçerek yöresel lezzetleri keşfedin</p>
       </div>
 

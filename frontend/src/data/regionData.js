@@ -58,13 +58,34 @@ export const regionThemes = {
 };
 
 export const cityDisplayNames = {
+  // Marmara (11)
   istanbul: 'İstanbul', bursa: 'Bursa', edirne: 'Edirne', tekirdag: 'Tekirdağ',
+  kocaeli: 'Kocaeli', balikesir: 'Balıkesir', canakkale: 'Çanakkale', yalova: 'Yalova',
+  sakarya: 'Sakarya', bilecik: 'Bilecik', kirklareli: 'Kırklareli',
+  // Ege (8)
   izmir: 'İzmir', mugla: 'Muğla', denizli: 'Denizli', aydin: 'Aydın',
+  manisa: 'Manisa', afyon: 'Afyon', kutahya: 'Kütahya', usak: 'Uşak',
+  // Akdeniz (8)
   antalya: 'Antalya', adana: 'Adana', mersin: 'Mersin', hatay: 'Hatay',
+  isparta: 'Isparta', burdur: 'Burdur', kahramanmaras: 'Kahramanmaraş', osmaniye: 'Osmaniye',
+  // İç Anadolu (13)
   ankara: 'Ankara', konya: 'Konya', kayseri: 'Kayseri', sivas: 'Sivas',
+  eskisehir: 'Eskişehir', nevsehir: 'Nevşehir', aksaray: 'Aksaray', nigde: 'Niğde',
+  kirsehir: 'Kırşehir', yozgat: 'Yozgat', karaman: 'Karaman', kirikkale: 'Kırıkkale', cankiri: 'Çankırı',
+  // Karadeniz (18)
   trabzon: 'Trabzon', samsun: 'Samsun', rize: 'Rize', giresun: 'Giresun',
+  ordu: 'Ordu', artvin: 'Artvin', sinop: 'Sinop', bolu: 'Bolu',
+  amasya: 'Amasya', tokat: 'Tokat', duzce: 'Düzce', zonguldak: 'Zonguldak',
+  bartin: 'Bartın', kastamonu: 'Kastamonu', corum: 'Çorum', bayburt: 'Bayburt',
+  gumushane: 'Gümüşhane', karabuk: 'Karabük',
+  // Doğu Anadolu (14)
   erzurum: 'Erzurum', van: 'Van', malatya: 'Malatya', elazig: 'Elazığ',
-  gaziantep: 'Gaziantep', sanliurfa: 'Şanlıurfa', diyarbakir: 'Diyarbakır', mardin: 'Mardin'
+  kars: 'Kars', bingol: 'Bingöl', erzincan: 'Erzincan',
+  agri: 'Ağrı', igdir: 'Iğdır', mus: 'Muş', tunceli: 'Tunceli',
+  bitlis: 'Bitlis', hakkari: 'Hakkari', ardahan: 'Ardahan',
+  // Güneydoğu Anadolu (9)
+  gaziantep: 'Gaziantep', sanliurfa: 'Şanlıurfa', diyarbakir: 'Diyarbakır', mardin: 'Mardin',
+  adiyaman: 'Adıyaman', batman: 'Batman', siirt: 'Siirt', sirnak: 'Şırnak', kilis: 'Kilis'
 };
 
 export const categoryIcons = {
