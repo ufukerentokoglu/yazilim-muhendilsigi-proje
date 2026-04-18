@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { getOrders, getStats, updateOrderStatus, cancelOrder, archiveOrder, dayEnd } from './services/api';
+import { useEffect, useState, useRef } from 'react';
+import { getOrders, getStats, updateOrderStatus, cancelOrder, archiveOrder, dayEnd, getPopularDishes } from './services/api';
+import PriceManager from './PriceManager';
 import './App.css';
 
 const statusFlow = ['Bekliyor', 'Hazırlanıyor', 'Hazır', 'Teslim Edildi'];
@@ -28,20 +29,70 @@ function App() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ total: 0, active: 0, cancelled: 0, revenue: 0 });
+  const [popular, setPopular] = useState([]);
+  const [showPopular, setShowPopular] = useState(false);
+  const [showPrices, setShowPrices] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const prevOrderCount = useRef(0);
+
+  const playNotification = () => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = 800;
+      gain.gain.value = 0.3;
+      osc.start();
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.setValueAtTime(1000, ctx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(800, ctx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime + 0.3);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      osc.stop(ctx.currentTime + 0.5);
+    } catch {}
+  };
 
   const fetchOrders = () => {
     Promise.all([getOrders(), getStats()]).then(([ordersRes, statsRes]) => {
-      setOrders(ordersRes.data);
+      const newOrders = ordersRes.data;
+
+      if (prevOrderCount.current > 0 && newOrders.length > prevOrderCount.current) {
+        playNotification();
+      }
+      prevOrderCount.current = newOrders.length;
+
+      setOrders(newOrders);
       setStats(statsRes.data);
       setLoading(false);
     }).catch(() => setLoading(false));
   };
 
+  const fetchPopular = () => {
+    getPopularDishes().then(res => setPopular(res.data)).catch(() => {});
+  };
+
   useEffect(() => {
+    if (!isLoggedIn) return;
     fetchOrders();
-    const interval = setInterval(fetchOrders, 4000);
+    fetchPopular();
+    const interval = setInterval(() => { fetchOrders(); fetchPopular(); }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isLoggedIn]);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (username === 'admin' && password === 'admin123') {
+      setIsLoggedIn(true);
+      setLoginError('');
+    } else {
+      setLoginError('Kullanıcı adı veya şifre hatalı');
+    }
+  };
 
   const handleStatusChange = async (orderId, currentStatus) => {
     const idx = statusFlow.indexOf(currentStatus);
@@ -76,6 +127,7 @@ function App() {
       a.click();
       window.URL.revokeObjectURL(url);
       fetchOrders();
+      fetchPopular();
     } catch {
       alert('Gün sonu raporu oluşturulurken hata oluştu');
     }
@@ -85,6 +137,32 @@ function App() {
     if (!dateStr) return '-';
     return new Date(dateStr).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
   };
+
+  // Login ekranı
+  if (!isLoggedIn) {
+    return (
+      <div className="login-page">
+        <form className="login-box" onSubmit={handleLogin}>
+          <h2>🍽️ Admin Paneli</h2>
+          <p>Yönetim paneline erişmek için giriş yapın</p>
+          <input
+            type="text"
+            placeholder="Kullanıcı adı"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Şifre"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          {loginError && <div className="login-error">{loginError}</div>}
+          <button type="submit">Giriş Yap</button>
+        </form>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -119,11 +197,35 @@ function App() {
             <span className="stat-number">₺{stats.revenue.toFixed(0)}</span>
             <span className="stat-label">Ciro</span>
           </div>
+          <button className="btn-popular" onClick={() => setShowPopular(!showPopular)}>
+            🏆 Popüler
+          </button>
+          <button className="btn-prices" onClick={() => setShowPrices(true)}>
+            💰 Fiyatlar
+          </button>
           <button className="btn-day-end" onClick={handleDayEnd}>
             📊 Gün Sonu
           </button>
         </div>
       </header>
+
+      {/* Popüler Yemekler */}
+      {showPopular && popular.length > 0 && (
+        <div className="popular-section">
+          <h3>🏆 En Çok Sipariş Edilen Yemekler</h3>
+          <div className="popular-list">
+            {popular.map((dish, i) => (
+              <div key={i} className="popular-item">
+                <span className="popular-rank">#{i + 1}</span>
+                <span className="popular-icon">{categoryIcons[dish.category]}</span>
+                <span className="popular-name">{dish.name}</span>
+                <span className="popular-region">{dish.region}</span>
+                <span className="popular-count">{dish.count} sipariş</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <main className="admin-main">
         {orders.length === 0 ? (
@@ -148,8 +250,13 @@ function App() {
                       <span className="order-num">#{order.orderId}</span>
                       <span className="order-time">{formatTime(order.createdAt)}</span>
                     </div>
-                    <div className="status-badge" style={{ background: statusColors[order.status] || '#666' }}>
-                      {statusIcons[order.status] || '•'} {order.status}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {order.tableNumber && (
+                        <span className="table-badge">Masa {order.tableNumber}</span>
+                      )}
+                      <div className="status-badge" style={{ background: statusColors[order.status] || '#666' }}>
+                        {statusIcons[order.status] || '•'} {order.status}
+                      </div>
                     </div>
                   </div>
 
@@ -158,6 +265,13 @@ function App() {
                     <span className="customer-icon">👤</span>
                     <span className="customer-name">{order.customerName}</span>
                   </div>
+
+                  {/* Sipariş notu */}
+                  {order.orderNote && (
+                    <div className="card-note">
+                      📝 {order.orderNote}
+                    </div>
+                  )}
 
                   {/* Ürünler */}
                   <div className="card-items">
@@ -189,7 +303,6 @@ function App() {
                       </div>
                     </div>
 
-                    {/* Progress - sadece aktif ve teslim edilenler için */}
                     {!isCancelled && (
                       <div className="progress-bar">
                         {statusFlow.map((s, i) => (
@@ -201,7 +314,6 @@ function App() {
                       </div>
                     )}
 
-                    {/* Butonlar */}
                     <div className="card-actions">
                       {isActive && (
                         <>
@@ -217,12 +329,7 @@ function App() {
                           </button>
                         </>
                       )}
-                      {isDelivered && (
-                        <button className="btn-delete" onClick={() => handleArchive(order.orderId)}>
-                          🗑️ Kaldır
-                        </button>
-                      )}
-                      {isCancelled && (
+                      {(isDelivered || isCancelled) && (
                         <button className="btn-delete" onClick={() => handleArchive(order.orderId)}>
                           🗑️ Kaldır
                         </button>
@@ -235,6 +342,8 @@ function App() {
           </div>
         )}
       </main>
+
+      {showPrices && <PriceManager onClose={() => setShowPrices(false)} />}
     </div>
   );
 }

@@ -710,6 +710,37 @@ main {
   border-color: #c0392b;
 }
 
+.cart-row-inputs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.cart-table-input {
+  width: 90px;
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.cart-note-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.cart-table-input:focus, .cart-note-input:focus {
+  outline: none;
+  border-color: #c0392b;
+}
+
 .btn-order {
   width: 100%;
   padding: 14px;

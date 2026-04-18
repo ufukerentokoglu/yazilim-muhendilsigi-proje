@@ -6,6 +6,8 @@ import { createOrder } from '../services/api';
 function CartSidebar() {
   const { items, removeItem, updateQuantity, clearCart, totalAmount, totalItems, isCartOpen, setIsCartOpen } = useCart();
   const [customerName, setCustomerName] = useState('');
+  const [tableNumber, setTableNumber] = useState('');
+  const [orderNote, setOrderNote] = useState('');
   const [orderResult, setOrderResult] = useState(null);
   const [ordering, setOrdering] = useState(false);
 
@@ -20,6 +22,8 @@ function CartSidebar() {
     try {
       const payload = {
         customerName: customerName.trim(),
+        tableNumber: tableNumber ? parseInt(tableNumber) : null,
+        orderNote: orderNote.trim() || null,
         items: items.map(item => ({
           regionKey: item.regionKey,
           city: item.cityKey,
@@ -132,6 +136,23 @@ function CartSidebar() {
                   onChange={e => setCustomerName(e.target.value)}
                   className="cart-name-input"
                 />
+
+                <div className="cart-row-inputs">
+                  <input
+                    type="number"
+                    placeholder="Masa No"
+                    value={tableNumber}
+                    onChange={e => setTableNumber(e.target.value)}
+                    className="cart-table-input"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Sipariş notu (opsiyonel)"
+                    value={orderNote}
+                    onChange={e => setOrderNote(e.target.value)}
+                    className="cart-note-input"
+                  />
+                </div>
 
                 <button
                   className="btn-order"

@@ -27,6 +27,12 @@ public class OrderEntity {
 
     private boolean archived = false;
 
+    private Integer tableNumber;
+
+    private String orderNote;
+
+    private LocalDateTime deliveredAt;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderLineEntity> lines = new ArrayList<>();
 
@@ -62,6 +68,15 @@ public class OrderEntity {
 
     public boolean isArchived() { return archived; }
     public void setArchived(boolean archived) { this.archived = archived; }
+
+    public Integer getTableNumber() { return tableNumber; }
+    public void setTableNumber(Integer tableNumber) { this.tableNumber = tableNumber; }
+
+    public String getOrderNote() { return orderNote; }
+    public void setOrderNote(String orderNote) { this.orderNote = orderNote; }
+
+    public LocalDateTime getDeliveredAt() { return deliveredAt; }
+    public void setDeliveredAt(LocalDateTime deliveredAt) { this.deliveredAt = deliveredAt; }
 
     public void addLine(OrderLineEntity line) {
         lines.add(line);

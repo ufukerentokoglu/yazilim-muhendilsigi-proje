@@ -15,9 +15,11 @@ import java.util.List;
 public class MenuService {
 
     private final FactoryProvider factoryProvider;
+    private final PriceService priceService;
 
-    public MenuService(FactoryProvider factoryProvider) {
+    public MenuService(FactoryProvider factoryProvider, PriceService priceService) {
         this.factoryProvider = factoryProvider;
+        this.priceService = priceService;
     }
 
     public List<RegionDTO> getAllRegions() {
@@ -39,10 +41,10 @@ public class MenuService {
         return new MenuDTO(
                 factory.getRegionName(),
                 city,
-                toDishDTO(mainDish, "Ana Yemek"),
-                toDishDTO(appetizer, "Başlangıç"),
-                toDishDTO(dessert, "Tatlı"),
-                toDishDTO(beverage, "İçecek")
+                toDishDTO(mainDish, "Ana Yemek", regionKey, city),
+                toDishDTO(appetizer, "Başlangıç", regionKey, city),
+                toDishDTO(dessert, "Tatlı", regionKey, city),
+                toDishDTO(beverage, "İçecek", regionKey, city)
         );
     }
 
@@ -56,27 +58,31 @@ public class MenuService {
             Dessert d = factory.createDessert(city);
             Beverage b = factory.createBeverage(city);
 
-            dishes.add(toDishDTO(m, "Ana Yemek"));
-            dishes.add(toDishDTO(a, "Başlangıç"));
-            dishes.add(toDishDTO(d, "Tatlı"));
-            dishes.add(toDishDTO(b, "İçecek"));
+            dishes.add(toDishDTO(m, "Ana Yemek", regionKey, city));
+            dishes.add(toDishDTO(a, "Başlangıç", regionKey, city));
+            dishes.add(toDishDTO(d, "Tatlı", regionKey, city));
+            dishes.add(toDishDTO(b, "İçecek", regionKey, city));
         }
         return dishes;
     }
 
-    private DishDTO toDishDTO(MainDish dish, String category) {
-        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
+    private DishDTO toDishDTO(MainDish dish, String category, String regionKey, String city) {
+        double price = priceService.getOverridePrice(regionKey, city, category).orElse(dish.getPrice());
+        return new DishDTO(dish.getName(), dish.getDescription(), price, dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
     }
 
-    private DishDTO toDishDTO(Appetizer dish, String category) {
-        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
+    private DishDTO toDishDTO(Appetizer dish, String category, String regionKey, String city) {
+        double price = priceService.getOverridePrice(regionKey, city, category).orElse(dish.getPrice());
+        return new DishDTO(dish.getName(), dish.getDescription(), price, dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
     }
 
-    private DishDTO toDishDTO(Dessert dish, String category) {
-        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
+    private DishDTO toDishDTO(Dessert dish, String category, String regionKey, String city) {
+        double price = priceService.getOverridePrice(regionKey, city, category).orElse(dish.getPrice());
+        return new DishDTO(dish.getName(), dish.getDescription(), price, dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
     }
 
-    private DishDTO toDishDTO(Beverage dish, String category) {
-        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
+    private DishDTO toDishDTO(Beverage dish, String category, String regionKey, String city) {
+        double price = priceService.getOverridePrice(regionKey, city, category).orElse(dish.getPrice());
+        return new DishDTO(dish.getName(), dish.getDescription(), price, dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
     }
 }

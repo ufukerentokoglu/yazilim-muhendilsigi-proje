@@ -91,7 +91,15 @@ function TrackOrderPage() {
   };
 
   const isCancelled = order?.status === 'İptal Edildi';
+  const isDelivered = order?.status === 'Teslim Edildi';
   const currentIdx = order ? statusFlow.indexOf(order.status) : -1;
+
+  const getElapsedMinutes = () => {
+    if (!order?.createdAt || !order?.deliveredAt) return null;
+    const start = new Date(order.createdAt).getTime();
+    const end = new Date(order.deliveredAt).getTime();
+    return Math.round((end - start) / 60000);
+  };
 
   return (
     <div className="track-page">
@@ -189,18 +197,37 @@ function TrackOrderPage() {
                   <span className="track-info-label">Toplam Tutar</span>
                   <span className="track-info-value track-total">₺{order.totalAmount.toFixed(2)}</span>
                 </div>
-                <div className="track-info-item">
-                  <span className="track-info-label">Tahmini Süre</span>
-                  <span className="track-info-value">{order.estimatedPrepTime} dk</span>
-                </div>
-                <div className="track-info-item">
-                  <span className="track-info-label">Sipariş Saati</span>
-                  <span className="track-info-value">{formatTime(order.createdAt)}</span>
-                </div>
-                <div className="track-info-item">
-                  <span className="track-info-label">Hazır Olma</span>
-                  <span className="track-info-value">{formatTime(order.estimatedReadyAt)}</span>
-                </div>
+                {isDelivered ? (
+                  <>
+                    <div className="track-info-item">
+                      <span className="track-info-label">Geçen Süre</span>
+                      <span className="track-info-value">{getElapsedMinutes()} dk</span>
+                    </div>
+                    <div className="track-info-item">
+                      <span className="track-info-label">Sipariş</span>
+                      <span className="track-info-value">{formatTime(order.createdAt)}</span>
+                    </div>
+                    <div className="track-info-item">
+                      <span className="track-info-label">Teslim</span>
+                      <span className="track-info-value">{formatTime(order.deliveredAt)}</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="track-info-item">
+                      <span className="track-info-label">Tahmini Süre</span>
+                      <span className="track-info-value">{order.estimatedPrepTime} dk</span>
+                    </div>
+                    <div className="track-info-item">
+                      <span className="track-info-label">Sipariş Saati</span>
+                      <span className="track-info-value">{formatTime(order.createdAt)}</span>
+                    </div>
+                    <div className="track-info-item">
+                      <span className="track-info-label">Hazır Olma</span>
+                      <span className="track-info-value">{formatTime(order.estimatedReadyAt)}</span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

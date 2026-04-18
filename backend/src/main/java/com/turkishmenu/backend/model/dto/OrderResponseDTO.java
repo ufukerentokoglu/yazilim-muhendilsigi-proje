@@ -12,6 +12,9 @@ public class OrderResponseDTO {
     private LocalDateTime createdAt;
     private int estimatedPrepTime;
     private LocalDateTime estimatedReadyAt;
+    private Integer tableNumber;
+    private String orderNote;
+    private LocalDateTime deliveredAt;
 
     public OrderResponseDTO() {}
 
@@ -40,4 +43,10 @@ public class OrderResponseDTO {
     public void setEstimatedPrepTime(int estimatedPrepTime) { this.estimatedPrepTime = estimatedPrepTime; }
     public LocalDateTime getEstimatedReadyAt() { return estimatedReadyAt; }
     public void setEstimatedReadyAt(LocalDateTime estimatedReadyAt) { this.estimatedReadyAt = estimatedReadyAt; }
+    public Integer getTableNumber() { return tableNumber; }
+    public void setTableNumber(Integer tableNumber) { this.tableNumber = tableNumber; }
+    public String getOrderNote() { return orderNote; }
+    public void setOrderNote(String orderNote) { this.orderNote = orderNote; }
+    public LocalDateTime getDeliveredAt() { return deliveredAt; }
+    public void setDeliveredAt(LocalDateTime deliveredAt) { this.deliveredAt = deliveredAt; }
 }

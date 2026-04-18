@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
+import com.turkishmenu.backend.model.dto.OrderLineDTO;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -51,6 +53,45 @@ public class OrderController {
                 .filter(o -> o.getStatus().equals("Teslim Edildi"))
                 .mapToDouble(OrderResponseDTO::getTotalAmount).sum();
         return Map.of("total", total, "active", active, "cancelled", cancelled, "revenue", revenue);
+    }
+
+    @GetMapping("/popular")
+    public List<Map<String, Object>> getPopularDishes() {
+        List<OrderResponseDTO> all = orderService.getAllOrders();
+        Map<String, int[]> dishCount = new LinkedHashMap<>();
+
+        for (OrderResponseDTO order : all) {
+            if (order.getStatus().equals("İptal Edildi")) continue;
+            for (OrderLineDTO line : order.getLines()) {
+                dishCount.computeIfAbsent(line.getDishName(), k -> new int[]{0, 0});
+                dishCount.get(line.getDishName())[0] += line.getQuantity();
+                if (!dishCount.containsKey(line.getDishName() + "_meta")) {
+                    dishCount.put(line.getDishName() + "_meta", new int[]{0, 0});
+                }
+            }
+        }
+
+        Map<String, Map<String, Object>> result = new LinkedHashMap<>();
+        for (OrderResponseDTO order : all) {
+            if (order.getStatus().equals("İptal Edildi")) continue;
+            for (OrderLineDTO line : order.getLines()) {
+                result.computeIfAbsent(line.getDishName(), k -> {
+                    Map<String, Object> m = new LinkedHashMap<>();
+                    m.put("name", line.getDishName());
+                    m.put("category", line.getCategory());
+                    m.put("region", line.getRegion());
+                    m.put("city", line.getCity());
+                    m.put("count", 0);
+                    return m;
+                });
+                result.get(line.getDishName()).merge("count", line.getQuantity(), (a, b) -> (int) a + (int) b);
+            }
+        }
+
+        return result.values().stream()
+                .sorted((a, b) -> Integer.compare((int) b.get("count"), (int) a.get("count")))
+                .limit(10)
+                .collect(Collectors.toList());
     }
 
     @PatchMapping("/{orderId}/status")

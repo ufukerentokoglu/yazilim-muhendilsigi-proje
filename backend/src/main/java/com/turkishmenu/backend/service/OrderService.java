@@ -20,16 +20,20 @@ public class OrderService {
 
     private final FactoryProvider factoryProvider;
     private final OrderRepository orderRepository;
+    private final PriceService priceService;
 
-    public OrderService(FactoryProvider factoryProvider, OrderRepository orderRepository) {
+    public OrderService(FactoryProvider factoryProvider, OrderRepository orderRepository, PriceService priceService) {
         this.factoryProvider = factoryProvider;
         this.orderRepository = orderRepository;
+        this.priceService = priceService;
     }
 
     @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO request) {
         OrderEntity order = new OrderEntity();
         order.setCustomerName(request.getCustomerName());
+        order.setTableNumber(request.getTableNumber());
+        order.setOrderNote(request.getOrderNote());
         order.setStatus("Bekliyor");
 
         double totalAmount = 0;
@@ -49,25 +53,25 @@ public class OrderService {
                 case "Ana Yemek" -> {
                     MainDish dish = factory.createMainDish(city);
                     dishName = dish.getName();
-                    price = dish.getPrice();
+                    price = priceService.getOverridePrice(item.getRegionKey(), city, category).orElse(dish.getPrice());
                     prepTime = dish.getPrepTime();
                 }
                 case "Başlangıç" -> {
                     Appetizer dish = factory.createAppetizer(city);
                     dishName = dish.getName();
-                    price = dish.getPrice();
+                    price = priceService.getOverridePrice(item.getRegionKey(), city, category).orElse(dish.getPrice());
                     prepTime = dish.getPrepTime();
                 }
                 case "Tatlı" -> {
                     Dessert dish = factory.createDessert(city);
                     dishName = dish.getName();
-                    price = dish.getPrice();
+                    price = priceService.getOverridePrice(item.getRegionKey(), city, category).orElse(dish.getPrice());
                     prepTime = dish.getPrepTime();
                 }
                 case "İçecek" -> {
                     Beverage dish = factory.createBeverage(city);
                     dishName = dish.getName();
-                    price = dish.getPrice();
+                    price = priceService.getOverridePrice(item.getRegionKey(), city, category).orElse(dish.getPrice());
                     prepTime = dish.getPrepTime();
                 }
                 default -> throw new IllegalArgumentException("Bilinmeyen kategori: " + category);
@@ -114,6 +118,9 @@ public class OrderService {
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Sipariş bulunamadı: " + orderId));
         order.setStatus(newStatus);
+        if ("Teslim Edildi".equals(newStatus)) {
+            order.setDeliveredAt(LocalDateTime.now());
+        }
         return toDTO(orderRepository.save(order));
     }
 
@@ -202,6 +209,9 @@ public class OrderService {
         );
         dto.setEstimatedPrepTime(entity.getEstimatedPrepTime());
         dto.setEstimatedReadyAt(entity.getEstimatedReadyAt());
+        dto.setTableNumber(entity.getTableNumber());
+        dto.setOrderNote(entity.getOrderNote());
+        dto.setDeliveredAt(entity.getDeliveredAt());
         return dto;
     }
 }
