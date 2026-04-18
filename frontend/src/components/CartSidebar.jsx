@@ -73,8 +73,16 @@ function CartSidebar() {
             <p className="order-prep-time">Tahmini Süre: <strong>{orderResult.estimatedPrepTime} dakika</strong></p>
             <p className="order-status">Durum: <strong>{orderResult.status}</strong></p>
 
-            <button className="btn-primary" onClick={() => { setOrderResult(null); setIsCartOpen(false); }}>
-              Tamam
+            <button className="btn-primary" onClick={() => {
+              const id = orderResult.orderId;
+              setOrderResult(null);
+              setIsCartOpen(false);
+              window.location.href = `/track?id=${id}`;
+            }}>
+              Siparişimi Takip Et
+            </button>
+            <button className="btn-secondary" onClick={() => { setOrderResult(null); setIsCartOpen(false); }}>
+              Menüye Dön
             </button>
           </div>
         ) : (
