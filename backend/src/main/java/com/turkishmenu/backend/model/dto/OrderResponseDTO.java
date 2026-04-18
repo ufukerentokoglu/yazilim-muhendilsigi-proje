@@ -10,6 +10,8 @@ public class OrderResponseDTO {
     private double totalAmount;
     private String status;
     private LocalDateTime createdAt;
+    private int estimatedPrepTime;
+    private LocalDateTime estimatedReadyAt;
 
     public OrderResponseDTO() {}
 
@@ -34,4 +36,8 @@ public class OrderResponseDTO {
     public void setStatus(String status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public int getEstimatedPrepTime() { return estimatedPrepTime; }
+    public void setEstimatedPrepTime(int estimatedPrepTime) { this.estimatedPrepTime = estimatedPrepTime; }
+    public LocalDateTime getEstimatedReadyAt() { return estimatedReadyAt; }
+    public void setEstimatedReadyAt(LocalDateTime estimatedReadyAt) { this.estimatedReadyAt = estimatedReadyAt; }
 }

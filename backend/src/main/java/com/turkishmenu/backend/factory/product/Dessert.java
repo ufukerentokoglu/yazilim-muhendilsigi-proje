@@ -6,4 +6,5 @@ public interface Dessert {
     double getPrice();
     String getCity();
     String getRegion();
+    int getPrepTime();
 }

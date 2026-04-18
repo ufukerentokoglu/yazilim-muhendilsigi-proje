@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { categoryIcons } from '../data/regionData';
-import axios from 'axios';
+import { createOrder } from '../services/api';
 
 function CartSidebar() {
   const { items, removeItem, updateQuantity, clearCart, totalAmount, totalItems, isCartOpen, setIsCartOpen } = useCart();
@@ -28,7 +28,7 @@ function CartSidebar() {
         }))
       };
 
-      const res = await axios.post('http://localhost:8080/api/orders', payload);
+      const res = await createOrder(payload);
       setOrderResult(res.data);
       clearCart();
     } catch (err) {
@@ -70,6 +70,7 @@ function CartSidebar() {
               <span>₺{orderResult.totalAmount.toFixed(2)}</span>
             </div>
 
+            <p className="order-prep-time">Tahmini Süre: <strong>{orderResult.estimatedPrepTime} dakika</strong></p>
             <p className="order-status">Durum: <strong>{orderResult.status}</strong></p>
 
             <button className="btn-primary" onClick={() => { setOrderResult(null); setIsCartOpen(false); }}>

@@ -65,18 +65,18 @@ public class MenuService {
     }
 
     private DishDTO toDishDTO(MainDish dish, String category) {
-        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category);
+        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
     }
 
     private DishDTO toDishDTO(Appetizer dish, String category) {
-        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category);
+        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
     }
 
     private DishDTO toDishDTO(Dessert dish, String category) {
-        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category);
+        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
     }
 
     private DishDTO toDishDTO(Beverage dish, String category) {
-        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category);
+        return new DishDTO(dish.getName(), dish.getDescription(), dish.getPrice(), dish.getCity(), dish.getRegion(), category, dish.getPrepTime());
     }
 }

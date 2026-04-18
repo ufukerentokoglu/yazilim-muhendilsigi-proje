@@ -6,4 +6,5 @@ public interface Appetizer {
     double getPrice();
     String getCity();
     String getRegion();
+    int getPrepTime();
 }

@@ -17,4 +17,5 @@ public class KaradenizBeverage implements Beverage {
     @Override public double getPrice() { return price; }
     @Override public String getCity() { return city; }
     @Override public String getRegion() { return "Karadeniz"; }
+    @Override public int getPrepTime() { return 5; }
 }

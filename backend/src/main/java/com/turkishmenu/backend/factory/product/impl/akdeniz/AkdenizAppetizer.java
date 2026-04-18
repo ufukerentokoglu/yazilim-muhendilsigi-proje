@@ -20,4 +20,5 @@ public class AkdenizAppetizer implements Appetizer {
     @Override public double getPrice() { return price; }
     @Override public String getCity() { return city; }
     @Override public String getRegion() { return "Akdeniz"; }
+    @Override public int getPrepTime() { return 15; }
 }

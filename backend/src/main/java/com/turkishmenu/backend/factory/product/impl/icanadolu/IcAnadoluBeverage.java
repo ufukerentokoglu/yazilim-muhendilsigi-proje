@@ -17,4 +17,5 @@ public class IcAnadoluBeverage implements Beverage {
     @Override public double getPrice() { return price; }
     @Override public String getCity() { return city; }
     @Override public String getRegion() { return "İç Anadolu"; }
+    @Override public int getPrepTime() { return 5; }
 }

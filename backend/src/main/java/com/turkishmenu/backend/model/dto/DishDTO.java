@@ -7,16 +7,18 @@ public class DishDTO {
     private String city;
     private String region;
     private String category;
+    private int prepTime;
 
     public DishDTO() {}
 
-    public DishDTO(String name, String description, double price, String city, String region, String category) {
+    public DishDTO(String name, String description, double price, String city, String region, String category, int prepTime) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.city = city;
         this.region = region;
         this.category = category;
+        this.prepTime = prepTime;
     }
 
     public String getName() { return name; }
@@ -31,4 +33,6 @@ public class DishDTO {
     public void setRegion(String region) { this.region = region; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+    public int getPrepTime() { return prepTime; }
+    public void setPrepTime(int prepTime) { this.prepTime = prepTime; }
 }

@@ -12,6 +12,29 @@
   text-align: center;
 }
 
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  position: relative;
+}
+
+.orders-link {
+  position: absolute;
+  right: 0;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.orders-link:hover {
+  background: rgba(255,255,255,0.3);
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -813,6 +836,269 @@ main {
 
 .btn-primary:hover {
   background: #a93226;
+}
+
+.btn-secondary {
+  display: block;
+  margin-top: 8px;
+  padding: 10px 40px;
+  background: none;
+  border: none;
+  color: #999;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  color: #333;
+}
+
+.order-prep-time {
+  color: #3498db;
+  margin-bottom: 4px;
+}
+
+/* ========== ORDERS PAGE ========== */
+.orders-banner {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: white;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+}
+
+.orders-banner h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.orders-banner p {
+  margin-top: 8px;
+  opacity: 0.8;
+  font-weight: 300;
+}
+
+.orders-empty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-icon-large {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.orders-empty h3 {
+  font-size: 22px;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.orders-empty p {
+  color: #999;
+  margin-bottom: 24px;
+}
+
+.btn-go-menu {
+  padding: 12px 32px;
+  background: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.orders-list {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  animation: fadeInUp 0.4s ease both;
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.order-card-id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.order-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.order-customer {
+  font-size: 15px;
+  color: #7f8c8d;
+}
+
+.order-status-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.order-card-body {
+  padding: 20px 24px;
+}
+
+.order-items-list {
+  margin-bottom: 16px;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f8f8f8;
+  font-size: 14px;
+}
+
+.order-item-icon {
+  font-size: 18px;
+}
+
+.order-item-name {
+  font-weight: 500;
+  flex: 1;
+}
+
+.order-item-region {
+  color: #95a5a6;
+  font-size: 12px;
+}
+
+.order-item-qty {
+  color: #7f8c8d;
+  font-size: 13px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.order-item-price {
+  font-weight: 600;
+  color: #27ae60;
+  min-width: 60px;
+  text-align: right;
+}
+
+.order-card-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.meta-item {
+  text-align: center;
+}
+
+.meta-label {
+  display: block;
+  font-size: 11px;
+  color: #95a5a6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.meta-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.meta-total {
+  color: #27ae60;
+  font-size: 18px;
+}
+
+.order-card-footer {
+  padding: 16px 24px;
+  background: #fafafa;
+  border-top: 1px solid #f0f0f0;
+}
+
+.status-progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.status-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.step-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  transition: all 0.3s;
+}
+
+.status-step.active .step-dot {
+  transform: scale(1.2);
+}
+
+.step-label {
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+}
+
+.status-step.active .step-label {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.btn-next-status {
+  width: 100%;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-next-status:hover {
+  opacity: 0.9;
 }
 
 /* ========== RESPONSIVE ========== */

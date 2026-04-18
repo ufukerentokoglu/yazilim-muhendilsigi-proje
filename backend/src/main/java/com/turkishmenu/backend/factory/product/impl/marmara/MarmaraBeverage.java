@@ -20,4 +20,5 @@ public class MarmaraBeverage implements Beverage {
     @Override public double getPrice() { return price; }
     @Override public String getCity() { return city; }
     @Override public String getRegion() { return "Marmara"; }
+    @Override public int getPrepTime() { return 5; }
 }

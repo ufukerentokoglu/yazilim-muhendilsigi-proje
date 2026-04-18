@@ -7,3 +7,7 @@ const api = axios.create({
 export const getRegions = () => api.get('/regions');
 export const getMenu = (regionKey, city) => api.get(`/menu/${regionKey}/${city}`);
 export const getDishes = (regionKey) => api.get(`/dishes/${regionKey}`);
+export const createOrder = (data) => api.post('/orders', data);
+export const getOrders = () => api.get('/orders');
+export const getOrder = (id) => api.get(`/orders/${id}`);
+export const updateOrderStatus = (id, status) => api.patch(`/orders/${id}/status`, { status });

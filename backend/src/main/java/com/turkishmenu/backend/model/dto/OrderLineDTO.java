@@ -8,6 +8,7 @@ public class OrderLineDTO {
     private double unitPrice;
     private int quantity;
     private double lineTotal;
+    private int prepTime;
 
     public OrderLineDTO() {}
 
@@ -35,4 +36,6 @@ public class OrderLineDTO {
     public void setQuantity(int quantity) { this.quantity = quantity; }
     public double getLineTotal() { return lineTotal; }
     public void setLineTotal(double lineTotal) { this.lineTotal = lineTotal; }
+    public int getPrepTime() { return prepTime; }
+    public void setPrepTime(int prepTime) { this.prepTime = prepTime; }
 }

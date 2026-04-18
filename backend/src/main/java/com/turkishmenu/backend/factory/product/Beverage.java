@@ -6,4 +6,5 @@ public interface Beverage {
     double getPrice();
     String getCity();
     String getRegion();
+    int getPrepTime();
 }

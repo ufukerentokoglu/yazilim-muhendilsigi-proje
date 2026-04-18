@@ -6,4 +6,5 @@ public interface MainDish {
     double getPrice();
     String getCity();
     String getRegion();
+    int getPrepTime(); // dakika
 }

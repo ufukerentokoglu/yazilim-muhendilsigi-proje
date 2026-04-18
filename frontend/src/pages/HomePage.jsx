@@ -67,27 +67,6 @@ function HomePage() {
           );
         })}
       </div>
-
-      <div className="pattern-info">
-        <h3>Abstract Factory Pattern</h3>
-        <div className="pattern-diagram">
-          <div className="pattern-box pattern-abstract">RegionFactory (Abstract)</div>
-          <div className="pattern-arrow">↓</div>
-          <div className="pattern-factories">
-            <div className="pattern-box pattern-concrete">MarmaraFactory</div>
-            <div className="pattern-box pattern-concrete">EgeFactory</div>
-            <div className="pattern-box pattern-concrete">AkdenizFactory</div>
-            <div className="pattern-box pattern-concrete">...</div>
-          </div>
-          <div className="pattern-arrow">↓</div>
-          <div className="pattern-products">
-            <div className="pattern-box pattern-product">MainDish</div>
-            <div className="pattern-box pattern-product">Appetizer</div>
-            <div className="pattern-box pattern-product">Dessert</div>
-            <div className="pattern-box pattern-product">Beverage</div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
