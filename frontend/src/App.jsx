@@ -13,7 +13,7 @@ function App() {
         <div className="app">
           <header className="app-header">
             <a href="/" className="logo">
-              <span className="logo-icon">🇹🇷</span>
+              <span className="logo-icon">🍽️</span>
               <h1>Türkiye Yöresel Lezzetler</h1>
             </a>
             <p className="subtitle">7 Bölgenin Eşsiz Lezzetleri</p>
