@@ -3,8 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getRegions, getMenu } from '../services/api';
 import { regionThemes, cityDisplayNames, categoryIcons } from '../data/regionData';
 import { useCart } from '../context/CartContext';
+import { useLang } from '../context/LangContext';
+import { translateDish } from '../utils/dishTranslator';
 
 function RegionPage() {
+  const { t, lang } = useLang();
   const { regionKey } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCart();
@@ -50,24 +53,24 @@ function RegionPage() {
     return (
       <div className="loading">
         <div className="spinner"></div>
-        <p>Yükleniyor...</p>
+        <p>{t('region.loading')}</p>
       </div>
     );
   }
 
   if (!region) {
-    return <div className="error">Bölge bulunamadı</div>;
+    return <div className="error">{t('region.notFound')}</div>;
   }
 
-  const dishes = menu ? [menu.mainDish, menu.appetizer, menu.dessert, menu.beverage] : [];
+  const dishes = menu?.dishes || [];
 
   return (
     <div className="region-page" style={{ '--region-primary': theme.primary, '--region-accent': theme.accent, '--region-bg': theme.bg }}>
       <div className="region-banner" style={{ background: theme.gradient }}>
-        <button className="back-btn" onClick={() => navigate('/')}>← Geri</button>
+        <button className="back-btn" onClick={() => navigate('/')}>{t('region.back')}</button>
         <span className="banner-emoji">{theme.emoji}</span>
-        <h2>{region.name} Bölgesi</h2>
-        <p>{theme.description}</p>
+        <h2>{region.name} {t('region.suffix')}</h2>
+        <p>{t(`region.desc.${regionKey}`) || theme.description}</p>
       </div>
 
       <div className="city-selector">
@@ -85,7 +88,7 @@ function RegionPage() {
 
       <div className="menu-section">
         <h3>
-          {cityDisplayNames[selectedCity] || selectedCity} Yöresel Menüsü
+          {cityDisplayNames[selectedCity] || selectedCity} {t('region.menuTitle')}
         </h3>
 
         {!menu ? (
@@ -98,11 +101,11 @@ function RegionPage() {
               <div key={i} className="dish-card" style={{ animationDelay: `${i * 0.1}s` }}>
                 <div className="dish-category" style={{ background: theme.primary }}>
                   <span className="dish-icon">{categoryIcons[dish.category]}</span>
-                  <span>{dish.category}</span>
+                  <span>{t(`cat.${dish.category}`)}</span>
                 </div>
                 <div className="dish-body">
-                  <h4>{dish.name}</h4>
-                  <p className="dish-desc">{dish.description}</p>
+                  <h4>{translateDish(dish.name, lang)}</h4>
+                  <p className="dish-desc">{translateDish(dish.description, lang)}</p>
                   <div className="dish-meta">
                     <span className="dish-city">📍 {dish.city}</span>
                     <span className="dish-price">₺{dish.price}</span>
@@ -112,7 +115,7 @@ function RegionPage() {
                     style={{ '--btn-color': theme.primary }}
                     onClick={() => handleAddToCart(dish, i)}
                   >
-                    {addedIndex === i ? '✓ Eklendi' : '+ Sepete Ekle'}
+                    {addedIndex === i ? t('region.added') : t('region.addToCart')}
                   </button>
                 </div>
               </div>

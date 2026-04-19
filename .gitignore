@@ -33,6 +33,9 @@ bin/
 ### Backend ###
 backend/target/
 backend/.mvn/wrapper/maven-wrapper.jar
+backend/data/
+*.mv.db
+*.trace.db
 
 ### Frontend ###
 frontend/node_modules/

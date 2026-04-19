@@ -1,6 +1,7 @@
 package com.turkishmenu.backend.model.dto;
 
 public class DishDTO {
+    private Long id;
     private String name;
     private String description;
     private double price;
@@ -20,6 +21,9 @@ public class DishDTO {
         this.category = category;
         this.prepTime = prepTime;
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

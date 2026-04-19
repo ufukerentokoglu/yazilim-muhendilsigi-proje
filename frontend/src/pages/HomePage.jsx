@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRegions } from '../services/api';
 import { regionThemes } from '../data/regionData';
+import { useLang } from '../context/LangContext';
 
 function HomePage() {
+  const { t, lang } = useLang();
   const [regions, setRegions] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ function HomePage() {
     return (
       <div className="loading">
         <div className="spinner"></div>
-        <p>Bölgeler yükleniyor...</p>
+        <p>{t('home.loading')}</p>
       </div>
     );
   }
@@ -29,7 +31,7 @@ function HomePage() {
   return (
     <div className="home-page">
       <div className="hero-section">
-        <p>Türkiye'nin 7 coğrafi bölgesinden birini seçerek yöresel lezzetleri keşfedin</p>
+        <p>{t('home.hero')}</p>
       </div>
 
       <div className="regions-grid">
@@ -52,7 +54,7 @@ function HomePage() {
                 <h3>{region.name}</h3>
               </div>
               <div className="region-card-body">
-                <p className="region-desc">{theme.description}</p>
+                <p className="region-desc">{t(`region.desc.${region.key}`) || theme.description}</p>
                 <div className="region-cities">
                   {region.cities.map(city => (
                     <span key={city} className="city-tag">{city}</span>
@@ -60,7 +62,7 @@ function HomePage() {
                 </div>
               </div>
               <div className="region-card-footer">
-                <span>Menüyü Keşfet →</span>
+                <span>{t('home.explore')}</span>
               </div>
             </div>
           );

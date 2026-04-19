@@ -15,6 +15,11 @@ public class OrderResponseDTO {
     private Integer tableNumber;
     private String orderNote;
     private LocalDateTime deliveredAt;
+    private String orderType;
+    private String orderTypeLabel;
+    private String orderTypeIcon;
+    private String orderTypeColor;
+    private String packagingDescription;
 
     public OrderResponseDTO() {}
 
@@ -49,4 +54,14 @@ public class OrderResponseDTO {
     public void setOrderNote(String orderNote) { this.orderNote = orderNote; }
     public LocalDateTime getDeliveredAt() { return deliveredAt; }
     public void setDeliveredAt(LocalDateTime deliveredAt) { this.deliveredAt = deliveredAt; }
+    public String getOrderType() { return orderType; }
+    public void setOrderType(String orderType) { this.orderType = orderType; }
+    public String getOrderTypeLabel() { return orderTypeLabel; }
+    public void setOrderTypeLabel(String orderTypeLabel) { this.orderTypeLabel = orderTypeLabel; }
+    public String getOrderTypeIcon() { return orderTypeIcon; }
+    public void setOrderTypeIcon(String orderTypeIcon) { this.orderTypeIcon = orderTypeIcon; }
+    public String getOrderTypeColor() { return orderTypeColor; }
+    public void setOrderTypeColor(String orderTypeColor) { this.orderTypeColor = orderTypeColor; }
+    public String getPackagingDescription() { return packagingDescription; }
+    public void setPackagingDescription(String packagingDescription) { this.packagingDescription = packagingDescription; }
 }

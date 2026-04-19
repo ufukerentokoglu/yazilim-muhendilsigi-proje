@@ -33,6 +33,8 @@ public class OrderEntity {
 
     private LocalDateTime deliveredAt;
 
+    private String orderType = "DINE_IN";
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderLineEntity> lines = new ArrayList<>();
 
@@ -77,6 +79,9 @@ public class OrderEntity {
 
     public LocalDateTime getDeliveredAt() { return deliveredAt; }
     public void setDeliveredAt(LocalDateTime deliveredAt) { this.deliveredAt = deliveredAt; }
+
+    public String getOrderType() { return orderType; }
+    public void setOrderType(String orderType) { this.orderType = orderType; }
 
     public void addLine(OrderLineEntity line) {
         lines.add(line);

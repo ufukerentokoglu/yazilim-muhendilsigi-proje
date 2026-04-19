@@ -1,9 +1,11 @@
 package com.turkishmenu.backend.service;
 
-import com.turkishmenu.backend.factory.FactoryProvider;
-import com.turkishmenu.backend.factory.RegionFactory;
-import com.turkishmenu.backend.factory.product.*;
+import com.turkishmenu.backend.factory.OrderTypeFactory;
+import com.turkishmenu.backend.factory.OrderTypeFactoryProvider;
+import com.turkishmenu.backend.factory.product.ordertype.OrderPresentation;
+import com.turkishmenu.backend.factory.product.ordertype.Packaging;
 import com.turkishmenu.backend.model.dto.*;
+import com.turkishmenu.backend.model.entity.DishEntity;
 import com.turkishmenu.backend.model.entity.OrderEntity;
 import com.turkishmenu.backend.model.entity.OrderLineEntity;
 import com.turkishmenu.backend.repository.OrderRepository;
@@ -18,77 +20,64 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    private final FactoryProvider factoryProvider;
+    private final OrderTypeFactoryProvider orderTypeFactoryProvider;
     private final OrderRepository orderRepository;
-    private final PriceService priceService;
+    private final DishService dishService;
 
-    public OrderService(FactoryProvider factoryProvider, OrderRepository orderRepository, PriceService priceService) {
-        this.factoryProvider = factoryProvider;
+    public OrderService(OrderTypeFactoryProvider orderTypeFactoryProvider,
+                        OrderRepository orderRepository,
+                        DishService dishService) {
+        this.orderTypeFactoryProvider = orderTypeFactoryProvider;
         this.orderRepository = orderRepository;
-        this.priceService = priceService;
+        this.dishService = dishService;
     }
 
     @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO request) {
+        OrderTypeFactory orderTypeFactory = orderTypeFactoryProvider.getFactory(request.getOrderType());
+        Packaging packaging = orderTypeFactory.createPackaging();
+        OrderPresentation presentation = orderTypeFactory.createPresentation();
+
+        if (presentation.requiresTable() && (request.getTableNumber() == null || request.getTableNumber() <= 0)) {
+            throw new IllegalArgumentException("Servis siparişi için masa numarası zorunludur");
+        }
+
         OrderEntity order = new OrderEntity();
         order.setCustomerName(request.getCustomerName());
-        order.setTableNumber(request.getTableNumber());
+        order.setTableNumber(presentation.requiresTable() ? request.getTableNumber() : null);
         order.setOrderNote(request.getOrderNote());
+        order.setOrderType(orderTypeFactory.getType().name());
         order.setStatus("Bekliyor");
 
         double totalAmount = 0;
         int maxPrepTime = 0;
 
         for (OrderItemDTO item : request.getItems()) {
-            RegionFactory factory = factoryProvider.getFactory(item.getRegionKey());
-            String city = item.getCity();
-            String category = item.getCategory();
             int quantity = item.getQuantity();
 
-            String dishName;
-            double price;
-            int prepTime;
-
-            switch (category) {
-                case "Ana Yemek" -> {
-                    MainDish dish = factory.createMainDish(city);
-                    dishName = dish.getName();
-                    price = priceService.getOverridePrice(item.getRegionKey(), city, category).orElse(dish.getPrice());
-                    prepTime = dish.getPrepTime();
-                }
-                case "Başlangıç" -> {
-                    Appetizer dish = factory.createAppetizer(city);
-                    dishName = dish.getName();
-                    price = priceService.getOverridePrice(item.getRegionKey(), city, category).orElse(dish.getPrice());
-                    prepTime = dish.getPrepTime();
-                }
-                case "Tatlı" -> {
-                    Dessert dish = factory.createDessert(city);
-                    dishName = dish.getName();
-                    price = priceService.getOverridePrice(item.getRegionKey(), city, category).orElse(dish.getPrice());
-                    prepTime = dish.getPrepTime();
-                }
-                case "İçecek" -> {
-                    Beverage dish = factory.createBeverage(city);
-                    dishName = dish.getName();
-                    price = priceService.getOverridePrice(item.getRegionKey(), city, category).orElse(dish.getPrice());
-                    prepTime = dish.getPrepTime();
-                }
-                default -> throw new IllegalArgumentException("Bilinmeyen kategori: " + category);
+            DishEntity dish;
+            if (item.getDishId() != null) {
+                dish = dishService.findById(item.getDishId())
+                        .orElseThrow(() -> new IllegalArgumentException("Yemek bulunamadı: id=" + item.getDishId()));
+            } else {
+                dish = dishService.findByRegionCityCategory(item.getRegionKey(), item.getCity(), item.getCategory())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                "Yemek bulunamadı: " + item.getRegionKey() + "/" + item.getCity() + "/" + item.getCategory()));
             }
 
             OrderLineEntity line = new OrderLineEntity(
-                    dishName, category, city,
-                    factory.getRegionName(), price, quantity, prepTime
+                    dish.getName(), dish.getCategory(), dish.getCity(),
+                    dish.getRegionName(), dish.getPrice(), quantity, dish.getPrepTime()
             );
             order.addLine(line);
             totalAmount += line.getLineTotal();
-            maxPrepTime = Math.max(maxPrepTime, prepTime);
+            maxPrepTime = Math.max(maxPrepTime, dish.getPrepTime());
         }
 
+        int totalPrepTime = maxPrepTime + packaging.getExtraPrepMinutes();
         order.setTotalAmount(totalAmount);
-        order.setEstimatedPrepTime(maxPrepTime);
-        order.setEstimatedReadyAt(LocalDateTime.now().plusMinutes(maxPrepTime));
+        order.setEstimatedPrepTime(totalPrepTime);
+        order.setEstimatedReadyAt(LocalDateTime.now().plusMinutes(totalPrepTime));
 
         OrderEntity saved = orderRepository.save(order);
         return toDTO(saved);
@@ -212,6 +201,16 @@ public class OrderService {
         dto.setTableNumber(entity.getTableNumber());
         dto.setOrderNote(entity.getOrderNote());
         dto.setDeliveredAt(entity.getDeliveredAt());
+
+        String typeKey = entity.getOrderType() != null ? entity.getOrderType() : "DINE_IN";
+        OrderTypeFactory typeFactory = orderTypeFactoryProvider.getFactory(typeKey);
+        OrderPresentation presentation = typeFactory.createPresentation();
+        Packaging packaging = typeFactory.createPackaging();
+        dto.setOrderType(typeFactory.getType().name());
+        dto.setOrderTypeLabel(presentation.getLabel());
+        dto.setOrderTypeIcon(presentation.getIcon());
+        dto.setOrderTypeColor(presentation.getBadgeColor());
+        dto.setPackagingDescription(packaging.getDescription());
         return dto;
     }
 }

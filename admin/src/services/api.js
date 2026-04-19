@@ -12,6 +12,9 @@ export const archiveOrder = (id) => api.delete(`/orders/${id}`);
 export const dayEnd = () => api.post('/orders/day-end', null, { responseType: 'blob' });
 export const getPopularDishes = () => api.get('/orders/popular');
 export const getRegions = () => api.get('/regions');
-export const getDishPrices = (regionKey) => api.get(`/prices/${regionKey}`);
-export const updatePrice = (regionKey, city, category, newPrice) => api.patch('/prices', { regionKey, city, category, newPrice });
-export const resetPrice = (regionKey, city, category) => api.delete('/prices', { data: { regionKey, city, category } });
+
+// Ürün (yemek) CRUD
+export const getDishes = (regionKey) => api.get(`/dishes/${regionKey}`);
+export const createDish = (regionKey, dish) => api.post(`/dishes/${regionKey}`, dish);
+export const updateDish = (id, dish) => api.put(`/dishes/${id}`, dish);
+export const deleteDish = (id) => api.delete(`/dishes/${id}`);

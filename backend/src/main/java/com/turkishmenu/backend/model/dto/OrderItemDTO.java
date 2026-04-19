@@ -1,6 +1,7 @@
 package com.turkishmenu.backend.model.dto;
 
 public class OrderItemDTO {
+    private Long dishId;
     private String regionKey;
     private String city;
     private String category;
@@ -8,6 +9,8 @@ public class OrderItemDTO {
 
     public OrderItemDTO() {}
 
+    public Long getDishId() { return dishId; }
+    public void setDishId(Long dishId) { this.dishId = dishId; }
     public String getRegionKey() { return regionKey; }
     public void setRegionKey(String regionKey) { this.regionKey = regionKey; }
     public String getCity() { return city; }

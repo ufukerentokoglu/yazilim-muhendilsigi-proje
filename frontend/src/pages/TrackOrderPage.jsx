@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getOrder } from '../services/api';
 import { categoryIcons } from '../data/regionData';
+import { useLang } from '../context/LangContext';
+import { translateDish } from '../utils/dishTranslator';
 
 const statusColors = {
   'Bekliyor': '#f39c12',
@@ -20,6 +22,7 @@ const statusIcons = {
 const statusFlow = ['Bekliyor', 'Hazırlanıyor', 'Hazır', 'Teslim Edildi'];
 
 function TrackOrderPage() {
+  const { t, lang } = useLang();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [orderId, setOrderId] = useState(searchParams.get('id') || '');
@@ -70,7 +73,7 @@ function TrackOrderPage() {
       // Polling başlat — her 3 saniyede güncelle
       intervalRef.current = setInterval(() => fetchOrder(orderId.trim()), 3000);
     } catch {
-      setError('Sipariş bulunamadı. Lütfen sipariş numaranızı kontrol edin.');
+      setError(t('track.notFound'));
     }
     setLoading(false);
   };
@@ -104,9 +107,9 @@ function TrackOrderPage() {
   return (
     <div className="track-page">
       <div className="track-banner">
-        <button className="back-btn" onClick={() => navigate('/')}>← Ana Sayfa</button>
-        <h2>📦 Sipariş Takip</h2>
-        <p>Sipariş numaranızı girerek durumunuzu öğrenin</p>
+        <button className="back-btn" onClick={() => navigate('/')}>{t('track.home')}</button>
+        <h2>{t('track.title')}</h2>
+        <p>{t('track.subtitle')}</p>
       </div>
 
       <div className="track-content">
@@ -115,14 +118,14 @@ function TrackOrderPage() {
             <span className="track-hash">#</span>
             <input
               type="number"
-              placeholder="Sipariş numarası"
+              placeholder={t('track.placeholder')}
               value={orderId}
               onChange={e => setOrderId(e.target.value)}
               className="track-input"
             />
           </div>
           <button type="submit" className="track-btn" disabled={loading}>
-            {loading ? 'Aranıyor...' : 'Sorgula'}
+            {loading ? t('track.searching') : t('track.search')}
           </button>
         </form>
 
@@ -134,7 +137,7 @@ function TrackOrderPage() {
 
         {searched && !loading && !error && !order && (
           <div className="track-error">
-            <span>❌</span> Sipariş bulunamadı
+            <span>❌</span> {t('track.notFoundShort')}
           </div>
         )}
 
@@ -142,17 +145,28 @@ function TrackOrderPage() {
           <div className={`track-result ${statusChanged ? 'track-pulse' : ''}`}>
             {/* Canlı gösterge */}
             <div className="track-live">
-              <span className="live-dot"></span> Canlı takip aktif
+              <span className="live-dot"></span> {t('track.live')}
             </div>
 
             {/* Üst bilgi */}
             <div className="track-header">
               <div>
-                <span className="track-order-num">Sipariş #{order.orderId}</span>
-                <span className="track-customer">{order.customerName}</span>
+                <span className="track-order-num">{t('track.orderPrefix')} #{order.orderId}</span>
+                <span className="track-customer">
+                  {order.customerName}
+                  {order.orderType && (
+                    <span
+                      className="track-type-badge"
+                      style={{ background: order.orderTypeColor }}
+                    >
+                      {order.orderTypeIcon} {t(`ordertype.${order.orderType === 'TAKEAWAY' ? 'takeaway' : 'dinein'}`)}
+                      {order.tableNumber ? ` · ${t('track.table')} ${order.tableNumber}` : ''}
+                    </span>
+                  )}
+                </span>
               </div>
               <div className="track-status-badge" style={{ background: statusColors[order.status] }}>
-                {statusIcons[order.status]} {order.status}
+                {statusIcons[order.status]} {t(`status.${order.status}`)}
               </div>
             </div>
 
@@ -162,7 +176,7 @@ function TrackOrderPage() {
                 {statusFlow.map((s, i) => (
                   <div key={s} className={`track-step ${i <= currentIdx ? 'active' : ''}`}>
                     <div className="track-dot" style={i <= currentIdx ? { background: statusColors[order.status] } : {}}></div>
-                    <span>{s}</span>
+                    <span>{t(`status.${s}`)}</span>
                   </div>
                 ))}
               </div>
@@ -170,18 +184,18 @@ function TrackOrderPage() {
 
             {isCancelled && (
               <div className="track-cancelled-msg">
-                Bu sipariş iptal edilmiştir.
+                {t('track.cancelledMsg')}
               </div>
             )}
 
             {/* Ürünler */}
             <div className="track-items">
-              <h4>Sipariş Detayı</h4>
+              <h4>{t('track.orderDetail')}</h4>
               {order.lines.map((line, i) => (
                 <div key={i} className="track-item">
                   <span className="track-item-icon">{categoryIcons[line.category]}</span>
                   <div className="track-item-info">
-                    <span className="track-item-name">{line.dishName}</span>
+                    <span className="track-item-name">{translateDish(line.dishName, lang)}</span>
                     <span className="track-item-meta">{line.region} · {line.city}</span>
                   </div>
                   <span className="track-item-qty">x{line.quantity}</span>
@@ -194,36 +208,36 @@ function TrackOrderPage() {
             <div className="track-footer">
               <div className="track-info-grid">
                 <div className="track-info-item">
-                  <span className="track-info-label">Toplam Tutar</span>
+                  <span className="track-info-label">{t('track.totalAmount')}</span>
                   <span className="track-info-value track-total">₺{order.totalAmount.toFixed(2)}</span>
                 </div>
                 {isDelivered ? (
                   <>
                     <div className="track-info-item">
-                      <span className="track-info-label">Geçen Süre</span>
-                      <span className="track-info-value">{getElapsedMinutes()} dk</span>
+                      <span className="track-info-label">{t('track.elapsed')}</span>
+                      <span className="track-info-value">{getElapsedMinutes()} {t('unit.min')}</span>
                     </div>
                     <div className="track-info-item">
-                      <span className="track-info-label">Sipariş</span>
+                      <span className="track-info-label">{t('track.orderTime')}</span>
                       <span className="track-info-value">{formatTime(order.createdAt)}</span>
                     </div>
                     <div className="track-info-item">
-                      <span className="track-info-label">Teslim</span>
+                      <span className="track-info-label">{t('track.deliveredTime')}</span>
                       <span className="track-info-value">{formatTime(order.deliveredAt)}</span>
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="track-info-item">
-                      <span className="track-info-label">Tahmini Süre</span>
-                      <span className="track-info-value">{order.estimatedPrepTime} dk</span>
+                      <span className="track-info-label">{t('track.estPrep')}</span>
+                      <span className="track-info-value">{order.estimatedPrepTime} {t('unit.min')}</span>
                     </div>
                     <div className="track-info-item">
-                      <span className="track-info-label">Sipariş Saati</span>
+                      <span className="track-info-label">{t('track.orderedAt')}</span>
                       <span className="track-info-value">{formatTime(order.createdAt)}</span>
                     </div>
                     <div className="track-info-item">
-                      <span className="track-info-label">Hazır Olma</span>
+                      <span className="track-info-label">{t('track.readyAt')}</span>
                       <span className="track-info-value">{formatTime(order.estimatedReadyAt)}</span>
                     </div>
                   </>

@@ -28,9 +28,4 @@ public class MenuController {
     public MenuDTO getMenu(@PathVariable String regionKey, @PathVariable String city) {
         return menuService.getMenu(regionKey, city);
     }
-
-    @GetMapping("/dishes/{regionKey}")
-    public List<DishDTO> getDishes(@PathVariable String regionKey) {
-        return menuService.getAllDishes(regionKey);
-    }
 }

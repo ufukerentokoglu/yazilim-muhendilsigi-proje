@@ -1,15 +1,31 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const CartContext = createContext();
 
+const STORAGE_KEY = 'turkishmenu.cart';
+
 export function CartProvider({ children }) {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {}
+  }, [items]);
 
   const addItem = (dish) => {
     setItems(prev => {
-      const existing = prev.find(
-        i => i.name === dish.name && i.city === dish.city && i.category === dish.category
+      const existing = prev.find(i =>
+        dish.id != null ? i.id === dish.id
+          : i.name === dish.name && i.city === dish.city && i.category === dish.category
       );
       if (existing) {
         return prev.map(i =>

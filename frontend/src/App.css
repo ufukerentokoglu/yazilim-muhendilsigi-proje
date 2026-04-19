@@ -102,13 +102,13 @@ main {
 
 .hero-section h2 {
   font-size: 32px;
-  color: #2c3e50;
+  color: var(--text);
   font-weight: 700;
 }
 
 .hero-section p {
   margin-top: 8px;
-  color: #7f8c8d;
+  color: var(--text-muted);
   font-size: 16px;
 }
 
@@ -123,17 +123,17 @@ main {
 
 /* ========== REGION CARD ========== */
 .region-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow);
 }
 
 .region-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-hover);
 }
 
 .region-card-header {
@@ -158,7 +158,7 @@ main {
 }
 
 .region-desc {
-  color: #666;
+  color: var(--text-muted);
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 16px;
@@ -182,7 +182,7 @@ main {
 
 .region-card-footer {
   padding: 16px 24px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--border-soft);
   color: var(--card-primary, #333);
   font-weight: 600;
   font-size: 14px;
@@ -193,15 +193,15 @@ main {
   max-width: 800px;
   margin: 0 auto 48px;
   padding: 40px;
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow);
   text-align: center;
 }
 
 .pattern-info h3 {
   font-size: 24px;
-  color: #2c3e50;
+  color: var(--text);
   margin-bottom: 24px;
 }
 
@@ -309,9 +309,10 @@ main {
 
 .city-btn {
   padding: 10px 24px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border);
   border-radius: 30px;
-  background: white;
+  background: var(--bg-card);
+  color: var(--text);
   cursor: pointer;
   font-family: inherit;
   font-size: 15px;
@@ -321,7 +322,7 @@ main {
 
 .city-btn:hover {
   border-color: var(--region-primary, #333);
-  background: var(--region-bg, #f5f5f5);
+  background: var(--region-bg, var(--bg-subtle));
 }
 
 .city-btn.active {
@@ -338,7 +339,7 @@ main {
 .menu-section h3 {
   text-align: center;
   font-size: 24px;
-  color: #2c3e50;
+  color: var(--text);
   margin-bottom: 24px;
 }
 
@@ -350,17 +351,17 @@ main {
 
 /* ========== DISH CARD ========== */
 .dish-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow);
   animation: fadeInUp 0.5s ease both;
   transition: all 0.3s ease;
 }
 
 .dish-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: var(--shadow-hover);
 }
 
 @keyframes fadeInUp {
@@ -394,12 +395,12 @@ main {
 
 .dish-body h4 {
   font-size: 18px;
-  color: #2c3e50;
+  color: var(--text);
   margin-bottom: 8px;
 }
 
 .dish-desc {
-  color: #7f8c8d;
+  color: var(--text-muted);
   font-size: 13px;
   line-height: 1.5;
   margin-bottom: 12px;
@@ -438,7 +439,7 @@ main {
   margin-top: 12px;
   padding: 10px;
   border: 2px solid var(--btn-color, #333);
-  background: white;
+  background: var(--bg-card);
   color: var(--btn-color, #333);
   border-radius: 10px;
   font-family: inherit;
@@ -531,7 +532,7 @@ main {
   bottom: 0;
   width: 420px;
   max-width: 90vw;
-  background: white;
+  background: var(--bg-card);
   display: flex;
   flex-direction: column;
   animation: slideIn 0.3s ease;
@@ -547,12 +548,12 @@ main {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .cart-header h3 {
   font-size: 20px;
-  color: #2c3e50;
+  color: var(--text);
 }
 
 .cart-close {
@@ -589,7 +590,7 @@ main {
 
 .cart-item {
   padding: 14px;
-  border: 1px solid #f0f0f0;
+  border: 1px solid var(--border-soft);
   border-radius: 12px;
   margin-bottom: 10px;
 }
@@ -608,7 +609,7 @@ main {
 .cart-item-name {
   font-weight: 600;
   font-size: 15px;
-  color: #2c3e50;
+  color: var(--text);
 }
 
 .cart-item-meta {
@@ -626,13 +627,14 @@ main {
   display: flex;
   align-items: center;
   gap: 0;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
 }
 
 .quantity-control button {
-  background: #f5f5f5;
+  background: var(--bg-subtle);
+  color: var(--text);
   border: none;
   padding: 6px 12px;
   cursor: pointer;
@@ -642,7 +644,7 @@ main {
 }
 
 .quantity-control button:hover {
-  background: #e0e0e0;
+  background: var(--border);
 }
 
 .quantity-control span {
@@ -676,8 +678,8 @@ main {
 /* ========== CART FOOTER ========== */
 .cart-footer {
   padding: 20px 24px;
-  border-top: 1px solid #eee;
-  background: #fafafa;
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-subtle);
 }
 
 .cart-total {
@@ -694,11 +696,83 @@ main {
   color: #27ae60;
 }
 
+.order-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.order-type-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-card);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.order-type-btn:hover {
+  border-color: #c0392b;
+  background: var(--bg-subtle);
+}
+
+.order-type-btn.active.dine-in {
+  border-color: #2980b9;
+  background: #eaf3fa;
+}
+
+.order-type-btn.active.takeaway {
+  border-color: #e67e22;
+  background: #fdf2e7;
+}
+
+.order-type-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.order-type-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.order-type-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+[data-theme="dark"] .order-type-btn.active.dine-in {
+  background: rgba(41,128,185,0.25);
+}
+[data-theme="dark"] .order-type-btn.active.takeaway {
+  background: rgba(230,126,34,0.25);
+}
+
+.order-type-badge-success {
+  display: inline-block;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
 .cart-name-input {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border);
   border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
   font-family: inherit;
   font-size: 15px;
   margin-bottom: 12px;
@@ -719,8 +793,10 @@ main {
 .cart-table-input {
   width: 90px;
   padding: 10px 12px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border);
   border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
   font-family: inherit;
   font-size: 14px;
   transition: border-color 0.2s;
@@ -729,8 +805,10 @@ main {
 .cart-note-input {
   flex: 1;
   padding: 10px 12px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border);
   border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
   font-family: inherit;
   font-size: 14px;
   transition: border-color 0.2s;
@@ -954,10 +1032,10 @@ main {
 }
 
 .order-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow);
   animation: fadeInUp 0.4s ease both;
 }
 
@@ -1148,6 +1226,42 @@ main {
   background: rgba(255,255,255,0.3);
 }
 
+/* Header sağ köşe: tema + dil butonları */
+.header-actions {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.header-actions button {
+  background: rgba(255,255,255,0.18);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 40px;
+}
+
+.header-actions button:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    position: static;
+    transform: none;
+    justify-content: center;
+  }
+}
+
 /* ========== TRACK ORDER PAGE ========== */
 .track-banner {
   background: linear-gradient(135deg, #2c3e50, #3498db);
@@ -1176,8 +1290,8 @@ main {
   flex: 1;
   display: flex;
   align-items: center;
-  background: white;
-  border: 2px solid #e0e0e0;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
   transition: border-color 0.2s;
@@ -1202,6 +1316,8 @@ main {
   font-family: inherit;
   font-size: 18px;
   font-weight: 500;
+  background: transparent;
+  color: var(--text);
 }
 
 .track-input::placeholder {
@@ -1238,10 +1354,10 @@ main {
 
 /* ========== TRACK RESULT ========== */
 .track-result {
-  background: white;
+  background: var(--bg-card);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow);
   animation: fadeInUp 0.4s ease;
   transition: box-shadow 0.3s;
 }
@@ -1293,6 +1409,18 @@ main {
 .track-customer {
   font-size: 14px;
   color: #95a5a6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.track-type-badge {
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .track-status-badge {
@@ -1439,14 +1567,84 @@ main {
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
-  .logo h1 { font-size: 20px; }
-  .regions-grid { padding: 16px; gap: 16px; }
-  .region-banner { padding: 24px; }
-  .dishes-grid { grid-template-columns: 1fr 1fr; }
+  .app-header { padding: 16px 16px 14px; }
+  .header-top { flex-direction: column; gap: 12px; }
+  .orders-link, .track-link { position: static; font-size: 13px; padding: 6px 12px; }
+  .logo { gap: 8px; }
+  .logo-icon { font-size: 28px; }
+  .logo h1 { font-size: 18px; }
+  .subtitle { font-size: 12px; margin-top: 6px; }
+
+  .hero-section { padding: 32px 16px 16px; }
+  .hero-section h2 { font-size: 24px; }
+  .hero-section p { font-size: 14px; }
+
+  .regions-grid { padding: 16px; gap: 16px; grid-template-columns: 1fr; }
+  .region-card-header { padding: 18px; }
+  .region-card-header h3 { font-size: 19px; }
+  .region-emoji { font-size: 28px; }
+  .region-card-body { padding: 16px 18px; }
+  .region-card-footer { padding: 14px 18px; }
+
+  .pattern-info { padding: 24px 20px; margin: 0 16px 32px; }
+  .pattern-info h3 { font-size: 20px; margin-bottom: 18px; }
+
+  .region-banner { padding: 28px 16px; }
+  .region-banner h2 { font-size: 24px; }
+  .banner-emoji { font-size: 40px; }
+  .back-btn { position: static; margin-bottom: 12px; display: inline-block; }
+
+  .city-selector { padding: 16px 12px; gap: 8px; }
+  .city-btn { padding: 8px 16px; font-size: 14px; }
+
+  .menu-section { padding: 0 16px 32px; }
+  .menu-section h3 { font-size: 20px; margin-bottom: 16px; }
+  .dishes-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .dish-body { padding: 14px; }
+  .dish-body h4 { font-size: 16px; }
+  .dish-desc { font-size: 12px; }
+
+  .cart-fab { bottom: 16px; right: 16px; padding: 12px 18px; }
+  .cart-fab-icon { font-size: 20px; }
+  .cart-fab-total { font-size: 14px; }
+
+  .cart-sidebar { width: 100%; max-width: 100%; }
+  .cart-header { padding: 16px 18px; }
+  .cart-footer { padding: 16px 18px; }
+  .cart-items { padding: 12px; }
+  .cart-row-inputs { flex-direction: column; gap: 10px; }
+  .cart-table-input { width: 100%; }
+  .cart-item-actions { flex-wrap: wrap; gap: 8px; }
+
+  .orders-banner, .track-banner { padding: 24px 16px; }
+  .orders-banner h2, .track-banner h2 { font-size: 22px; }
+  .orders-list { padding: 0 16px 32px; gap: 14px; }
+  .order-card-header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+  .order-card-body { padding: 16px; }
+  .order-card-footer { padding: 14px 16px; }
+  .order-card-meta { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .order-number { font-size: 16px; }
+  .status-progress { gap: 4px; }
+  .step-label { font-size: 10px; }
+
+  .track-content { padding: 24px 16px 32px; }
   .track-form { flex-direction: column; }
+  .track-btn { width: 100%; }
   .track-info-grid { grid-template-columns: repeat(2, 1fr); }
+  .track-header { padding: 16px; flex-wrap: wrap; gap: 8px; }
+  .track-progress { padding: 16px 12px; }
+  .track-step span { font-size: 10px; }
+  .track-items, .track-footer { padding: 16px; }
+  .order-success { padding: 32px 18px; }
 }
 
 @media (max-width: 480px) {
   .dishes-grid { grid-template-columns: 1fr; }
+  .logo h1 { font-size: 16px; }
+  .hero-section h2 { font-size: 20px; }
+  .region-banner h2 { font-size: 20px; }
+  .orders-banner h2, .track-banner h2 { font-size: 20px; }
+  .city-btn { padding: 8px 14px; font-size: 13px; }
+  .cart-fab { padding: 10px 14px; font-size: 15px; }
+  .cart-fab-total { display: none; }
 }
